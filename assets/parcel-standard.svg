@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" role="img" aria-labelledby="title desc">
+  <title id="title">Standard shipping parcel</title>
+  <desc id="desc">An illustrated corrugated cardboard parcel with a standard shipping label.</desc>
+  <defs>
+    <linearGradient id="front" x1="0" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#d5a66d"/>
+      <stop offset="1" stop-color="#a87542"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b88754"/>
+      <stop offset="1" stop-color="#805332"/>
+    </linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#edc78f"/>
+      <stop offset="1" stop-color="#c89560"/>
+    </linearGradient>
+    <filter id="shadow" x="-.3" y="-.3" width="1.6" height="1.8">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7"/>
+      <feOffset dy="7"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".28"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="143" cy="193" rx="91" ry="13" fill="#05090c" opacity=".38"/>
+  <g filter="url(#shadow)" stroke="#714d2e" stroke-linejoin="round">
+    <path d="m54 69 76-39 101 37-80 42z" fill="url(#top)" stroke-width="2"/>
+    <path d="m54 69 97 39v86l-97-43z" fill="url(#front)" stroke-width="2"/>
+    <path d="m151 108 80-41v88l-80 39z" fill="url(#side)" stroke-width="2"/>
+    <path d="m118 45 23-12 41 15-26 14z" fill="#e5c79d" stroke="#bc9d74"/>
+    <path d="m139 37 7 3v18l-7-3z" fill="#d7bb91" stroke="none"/>
+    <path d="m56 72 91 36v7L56 80z" fill="#765331" opacity=".56" stroke="none"/>
+    <path d="m151 108 8 3v80l-8 3z" fill="#67472e" opacity=".35" stroke="none"/>
+    <path d="m68 89 68 27v12L68 101z" fill="#e2bd88" opacity=".6" stroke="none"/>
+    <rect x="76" y="116" width="54" height="46" rx="3" transform="rotate(22 76 116)" fill="#f5f0e5" stroke="#d4c8b4" stroke-width="1.5"/>
+    <path d="m83 124 32 13" stroke="#88a076" stroke-width="4"/>
+    <path d="m81 131 23 9" stroke="#c5b79e" stroke-width="1.5"/>
+    <path d="m79 137 18 7" stroke="#c5b79e" stroke-width="1.5"/>
+    <g transform="rotate(22 103 149)" stroke="none" fill="#26343a">
+      <path d="M82 145h2v14h-2zm4 0h1v14h-1zm3 0h3v14h-3zm5 0h1v14h-1zm3 0h2v14h-2zm4 0h1v14h-1zm3 0h3v14h-3zm5 0h1v14h-1zm3 0h2v14h-2z"/>
+    </g>
+    <path d="m166 119 48-24v5l-48 25z" fill="#d5ae7e" opacity=".45" stroke="none"/>
+    <path d="m170 135 43-21m-43 27 43-21m-43 27 30-15" stroke="#d6b68f" stroke-width="1.4" opacity=".5"/>
+  </g>
+</svg>

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive Turing machine that sorts priority and standard parcels on a visual tape.">
+  <title>Turing Machine Simulator &amp; Visualizer | RIT</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">TM</span><span>TM Visualizer<small>RIT · COMPUTER SCIENCE &amp; ENGINEERING</small></span></a>
+    <nav aria-label="Main navigation">
+      <a class="active" href="index.html">Simulator</a>
+      <a href="theory.html">Theory</a>
+      <a href="manual.html">Manual</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">FINITE AUTOMATA &amp; FORMAL LANGUAGES · PROJECT</p>
+        <h1>Turing Machine <span class="title-accent">Simulator &amp; Visualizer</span></h1>
+        <p class="hero-copy">An interactive machine that sorts priority parcels on a tape. Follow its read/write head, inspect every transition, and see the formal state diagram respond live.</p>
+        <div class="hero-actions">
+          <button id="presentBtn" class="button button-secondary" type="button" aria-pressed="false">▣ Presentation mode</button>
+          <button id="exportBtn" class="button button-secondary" type="button">↓ Export run trace</button>
+        </div>
+        <p id="exportStatus" class="helper-text" role="status" aria-live="polite"></p>
+      </div>
+      <div class="hero-machine" aria-hidden="true">
+        <span class="hero-lamp"></span>
+        <span class="hero-beam"></span>
+        <span class="hero-machine-label">PARCEL SORTING UNIT · TM-01</span>
+      </div>
+    </section>
+
+    <section class="status-grid" aria-label="Machine status">
+      <article class="status-card"><span class="status-label">CURRENT STATE</span><strong id="stateValue">q₀ · Start</strong></article>
+      <article class="status-card"><span class="status-label">HEAD POSITION</span><strong id="headValue">Cell 0</strong></article>
+      <article class="status-card"><span class="status-label">TRANSITIONS</span><strong id="stepValue">0</strong></article>
+      <article class="status-card"><span class="status-label">RESULT</span><strong id="resultValue" class="result-idle">Ready</strong></article>
+    </section>
+
+    <section class="panel workflow-panel" aria-labelledby="workflowTitle">
+      <div class="panel-heading">
+        <div><p class="eyebrow">PARCEL-TO-ROUTE WORKFLOW</p><h2 id="workflowTitle">From parcel ID to destination lane</h2></div>
+        <span class="simulation-badge">OFFLINE SIMULATION · NO HARDWARE CONNECTED</span>
+      </div>
+      <ol class="workflow-steps" aria-label="Workflow progress">
+        <li data-flow-step="detect"><span>01</span>Detect</li>
+        <li data-flow-step="identify"><span>02</span>Identify</li>
+        <li data-flow-step="classify"><span>03</span>Classify</li>
+        <li data-flow-step="sort"><span>04</span>Sort</li>
+        <li data-flow-step="route"><span>05</span>Route</li>
+      </ol>
+      <div class="workflow-grid">
+        <section class="workflow-station">
+          <p class="eyebrow">SIMULATED SCANNER</p>
+          <h3>Read a parcel label</h3>
+          <p class="section-note">Try a sample ID. The local demo record—not box appearance—determines the service class.</p>
+          <label class="field-label" for="trackingIdInput">Tracking ID</label>
+          <div class="input-row"><input id="trackingIdInput" type="text" value="PKG-1002" maxlength="24" autocomplete="off" spellcheck="false"><button id="scanParcelBtn" class="button button-secondary" type="button">Scan ID</button></div>
+          <p class="helper-text">Samples: PKG-1001 (priority), PKG-1002 (standard), UNREADABLE, NO-RECORD</p>
+          <div id="scanResult" class="scan-result" role="status" aria-live="polite">Ready to simulate parcel detection and label identification.</div>
+          <button id="addParcelBtn" class="button button-primary" type="button" disabled>Add classified parcel to batch</button>
+        </section>
+        <section class="workflow-station">
+          <div class="panel-heading compact"><div><p class="eyebrow">SORTER INPUT</p><h3>Classified batch</h3></div><span id="batchCount" class="trace-count">0 parcels</span></div>
+          <p id="batchEmpty" class="batch-empty">Scan and add identified parcels to build a batch.</p>
+          <ol id="parcelBatch" class="parcel-batch" aria-label="Classified parcel batch"></ol>
+          <div class="workflow-actions"><button id="loadBatchBtn" class="button button-primary" type="button" disabled>Load batch into Turing machine</button><button id="clearBatchBtn" class="button button-quiet" type="button" disabled>Clear batch</button></div>
+          <p id="batchMessage" class="helper-text" role="status" aria-live="polite">Classified records are converted to S/P symbols only when loaded.</p>
+        </section>
+      </div>
+      <section class="guided-demo" aria-labelledby="guidedTitle">
+        <div><p class="eyebrow">PRESENTATION WALKTHROUGH</p><h3 id="guidedTitle">Guided demo: standard parcel before priority</h3><p id="guidedMessage" class="section-note">Follow a simulated sensor event, scan two sample IDs, load the resulting SP input, then watch it sort and route.</p></div>
+        <button id="guidedDemoBtn" class="button button-secondary" type="button">Start guided demo</button>
+      </section>
+      <section id="routingResult" class="routing-result" aria-live="polite" hidden>
+        <div class="panel-heading compact"><div><p class="eyebrow">SORT COMPLETE</p><h3>Destination lanes</h3></div><span id="routingSummary" class="trace-count"></span></div>
+        <div class="routing-lanes">
+          <section class="routing-lane priority-lane"><h4>Priority lane <span id="priorityLaneCount">0 parcels</span></h4><div id="priorityLane" class="routing-parcels"></div></section>
+          <section class="routing-lane standard-lane"><h4>Standard lane <span id="standardLaneCount">0 parcels</span></h4><div id="standardLane" class="routing-parcels"></div></section>
+        </div>
+      </section>
+    </section>
+
+    <div class="simulator-grid">
+      <section class="panel main-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">LIVE TAPE</p><h2>Conveyor &amp; read/write head</h2></div>
+          <span class="legend"><i class="legend-priority"></i> Priority <i class="legend-standard"></i> Standard</span>
+        </div>
+        <p class="section-note">The conveyor represents the tape. The highlighted scanner cell is what the machine reads on its next step.</p>
+
+        <div class="conveyor-frame" aria-label="Turing machine tape">
+          <div id="tape" class="tape" role="list" aria-live="polite"></div>
+          <div class="belt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="tape-caption"><span>← Tape extends as needed →</span><span id="readout">Next read: left marker</span></div>
+        <section class="factory-conveyor" aria-labelledby="factoryConveyorTitle">
+          <div class="factory-conveyor-heading">
+            <div><p class="eyebrow">REAL-WORLD ANALOGY</p><h3 id="factoryConveyorTitle">Factory conveyor view</h3></div>
+            <span id="conveyorState" class="conveyor-state"><i></i> READY</span>
+          </div>
+          <p class="conveyor-explainer">Each box mirrors one tape symbol. The scanner follows the Turing machine head; when it swaps <strong>S P</strong>, watch the parcel labels change in the same two writes.</p>
+          <div id="factoryViewport" class="factory-viewport" aria-label="Animated parcel conveyor synchronized with the Turing machine">
+            <div id="factoryTrack" class="factory-track" role="list" aria-live="polite"></div>
+            <div class="factory-rollers" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="factory-caption"><span><i class="legend-priority"></i> Priority parcel <i class="legend-standard"></i> Standard parcel</span><span id="conveyorMessage">The scanner starts at the tape’s left boundary.</span></div>
+        </section>
+        <div class="sorting-progress" aria-label="Sorting progress">
+          <div class="progress-summary">
+            <span><small>PASS</small><strong id="passValue">1</strong></span>
+            <span><small>SWAPS THIS PASS</small><strong id="passSwapsValue">0</strong></span>
+            <span><small>TOTAL SWAPS</small><strong id="totalSwapsValue">0</strong></span>
+            <span class="progress-verdict" id="passVerdict">Ready to scan</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Head progress through the input" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div>
+        </div>
+
+        <div class="transition-box">
+          <div class="transition-icon">δ</div>
+          <div><span class="status-label">LAST TRANSITION</span><strong id="transitionValue">Ready to begin</strong><small id="transitionDetail">A transition reads, writes, changes state, and moves the head.</small></div>
+        </div>
+
+        <div class="control-row">
+          <button id="stepBtn" class="button button-primary" type="button">Step <kbd>Space</kbd></button>
+          <button id="runBtn" class="button button-secondary" type="button">▶ Run</button>
+          <button id="pauseBtn" class="button button-secondary" type="button" disabled>Ⅱ Pause</button>
+          <button id="resetBtn" class="button button-quiet" type="button">↺ Reset</button>
+        </div>
+        <label class="speed-control" for="speedInput"><span>Animation speed</span><input id="speedInput" type="range" min="80" max="900" step="20" value="400"><output id="speedValue">400 ms / step</output></label>
+      </section>
+
+      <aside class="side-stack">
+        <section class="panel setup-panel">
+          <div class="panel-heading compact"><div><p class="eyebrow">INPUT</p><h2>Parcel sequence</h2></div></div>
+          <label class="field-label" for="inputValue">Enter only S and P</label>
+          <div class="input-row"><input id="inputValue" type="text" value="SPSP" maxlength="40" autocomplete="off" spellcheck="false" aria-describedby="inputHelp"><button id="loadBtn" class="button button-secondary" type="button">Load</button></div>
+          <p id="inputHelp" class="helper-text">S = standard parcel · P = priority parcel · max 40 parcels</p>
+          <p id="inputError" class="error-message" role="alert"></p>
+          <label class="field-label example-label" for="exampleSelect">Try an example</label>
+          <select id="exampleSelect">
+            <option value="SPSP">Mixed parcels · SPSP</option>
+            <option value="SSPP">Already sorted · SSPP</option>
+            <option value="PPSS">Priority first · PPSS</option>
+            <option value="SP">One swap · SP</option>
+            <option value="PSPS">Alternating parcels · PSPS</option>
+            <option value="SSSPPP">Standard then priority · SSSPPP</option>
+            <option value="PPPSSS">Priority then standard · PPPSSS</option>
+            <option value="SSSPPSPP">Long mixed run · SSSPPSPP</option>
+          </select>
+          <div class="example-summary" aria-live="polite">
+            <span><small>EXPECTED OUTPUT</small><strong id="expectedValue">PPSS</strong></span>
+            <span><small>ADJACENT SWAPS</small><strong id="expectedSwapsValue">3</strong></span>
+          </div>
+        </section>
+
+        <section class="panel machine-panel">
+          <div class="panel-heading compact"><div><p class="eyebrow">AUTOMATON</p><h2>Machine states</h2></div></div>
+          <ul id="stateList" class="state-list">
+            <li data-state="q0"><span>q₀</span><div><strong>Start</strong><small>Move to first parcel</small></div></li>
+            <li data-state="q_scan0"><span>qₛ</span><div><strong>Scan · no swaps yet</strong><small>Check adjacent parcels</small></div></li>
+            <li data-state="q_scan1"><span>qₛ′</span><div><strong>Scan · swap made</strong><small>Continue this pass</small></div></li>
+            <li data-state="q_afterS0"><span>qₛ₁</span><div><strong>Check next parcel</strong><small>Previous symbol was S</small></div></li>
+            <li data-state="q_afterS1"><span>qₛ₁′</span><div><strong>Check next parcel</strong><small>Previous symbol S · swap made</small></div></li>
+            <li data-state="q_afterP0"><span>qₚ</span><div><strong>Continue scan</strong><small>Previous symbol was P</small></div></li>
+            <li data-state="q_afterP1"><span>qₚ′</span><div><strong>Continue scan</strong><small>Previous symbol P · swap made</small></div></li>
+            <li data-state="q_swapLeft"><span>qₓ</span><div><strong>Swap</strong><small>Write symbols on tape</small></div></li>
+            <li data-state="q_rewind"><span>qᵣ</span><div><strong>New pass</strong><small>Return to tape start</small></div></li>
+            <li data-state="q_accept"><span>qₐ</span><div><strong>Accepted</strong><small>All parcels are sorted</small></div></li>
+            <li data-state="q_reject"><span>qᵣⱼ</span><div><strong>Rejected</strong><small>Missing transition or invalid run</small></div></li>
+          </ul>
+        </section>
+
+        <section class="panel rule-panel">
+          <div class="panel-heading compact"><div><p class="eyebrow">RULE OF THE SORT</p><h2>What the machine checks</h2></div></div>
+          <div class="rule-example"><span class="parcel standard-parcel">S</span><b>before</b><span class="parcel priority-parcel">P</span><span class="rule-arrow">→</span><span class="parcel priority-parcel">P</span><span class="parcel standard-parcel">S</span></div>
+          <p class="section-note">An adjacent <strong>S P</strong> is out of order. The head swaps it using multiple tape transitions, then continues scanning.</p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="panel timeline-panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow">TIME TRAVEL</p><h2>Step timeline</h2></div>
+        <span id="timelineValue" class="trace-count">Step 0 of 0</span>
+      </div>
+      <div class="timeline-controls">
+        <button id="previousStepBtn" class="button button-quiet" type="button" aria-label="Previous transition">← Previous</button>
+        <input id="timelineSlider" type="range" min="0" max="0" value="0" aria-label="Scrub execution history">
+        <button id="nextStepBtn" class="button button-quiet" type="button" aria-label="Next transition">Next →</button>
+        <button id="replayBtn" class="button button-secondary" type="button">↺ Replay from here</button>
+      </div>
+      <p class="timeline-help">Scrub to inspect any earlier tape, head position, state, and transition. Replay continues from the selected step.</p>
+    </section>
+
+    <section class="panel diagram-panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow">LIVE MACHINE MODEL</p><h2>State transition map</h2></div>
+        <span class="diagram-live"><i></i> ACTIVE STATE HIGHLIGHTED</span>
+      </div>
+      <p class="section-note">The machine’s control state remembers what it has seen so far in the current pass. Follow the highlighted state as each rule executes.</p>
+      <div class="diagram-scroll">
+        <svg id="stateDiagram" class="state-diagram" viewBox="0 0 920 252" role="img" aria-label="Turing machine state transition diagram">
+          <defs>
+            <marker id="diagramArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1 L9 5 L0 9z" fill="#718b96"/></marker>
+            <marker id="diagramArrowActive" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1 L9 5 L0 9z" fill="#68e1d2"/></marker>
+          </defs>
+          <path id="edge-start-scan" class="diagram-edge" d="M126 112 H204"/><text class="edge-label" x="165" y="101">⊢ / R</text>
+          <path id="edge-scan-check" class="diagram-edge" d="M318 112 H386"/><text class="edge-label" x="352" y="101">S, P / R</text>
+          <path id="edge-check-swap" class="diagram-edge" d="M493 112 H566"/><text class="edge-label" x="530" y="101">S P / write</text>
+          <path id="edge-swap-scan" class="diagram-edge" d="M622 143 C622 205 264 219 264 145"/><text class="edge-label" x="426" y="213">finish swap · resume scan</text>
+          <path id="edge-check-check" class="diagram-edge" d="M438 145 C438 183 264 183 264 145"/><text class="edge-label" x="350" y="174">next parcel</text>
+          <path id="edge-scan-rewind" class="diagram-edge" d="M261 80 C261 30 626 30 626 80"/><text class="edge-label" x="445" y="29">end of pass · swaps made</text>
+          <path id="edge-clean-accept" class="diagram-edge" d="M318 96 C390 52 701 52 773 96"/><text class="edge-label" x="552" y="52">end of clean pass · accept</text>
+          <path id="edge-rewind-scan" class="diagram-edge" d="M672 112 H764"/><text class="edge-label" x="717" y="101">⊢ / restart</text>
+          <path id="edge-rewind-loop" class="diagram-edge" d="M850 143 C910 174 908 58 850 85"/><text class="edge-label" x="872" y="179">L to ⊢</text>
+          <g class="diagram-node" data-diagram-state="q0"><rect x="28" y="85" width="98" height="58" rx="13"/><text class="node-code" x="77" y="110">q₀</text><text class="node-name" x="77" y="129">START</text></g>
+          <g class="diagram-node" data-diagram-state="q_scan"><rect x="204" y="85" width="114" height="58" rx="13"/><text class="node-code" x="261" y="110">qₛ</text><text class="node-name" x="261" y="129">SCAN PASS</text></g>
+          <g class="diagram-node" data-diagram-state="q_check"><rect x="386" y="85" width="107" height="58" rx="13"/><text class="node-code" x="439" y="110">qₚ / qₛ₁</text><text class="node-name" x="439" y="129">CHECK PAIR</text></g>
+          <g class="diagram-node" data-diagram-state="q_swapLeft"><rect x="566" y="85" width="106" height="58" rx="13"/><text class="node-code" x="619" y="110">qₓ</text><text class="node-name" x="619" y="129">SWAP</text></g>
+          <g class="diagram-node" data-diagram-state="q_rewind"><rect x="764" y="85" width="126" height="58" rx="13"/><text class="node-code" x="827" y="110">qᵣ / qₐ</text><text class="node-name" x="827" y="129">REWIND / HALT</text></g>
+        </svg>
+      </div>
+      <details class="transition-rules">
+        <summary>View complete transition table <span id="ruleCount" class="rule-count"></span></summary>
+        <div class="table-wrap"><table class="transition-table"><thead><tr><th>Current state</th><th>Read</th><th>Write</th><th>Move</th><th>Next state</th></tr></thead><tbody id="transitionRows"></tbody></table></div>
+      </details>
+    </section>
+
+    <section class="panel trace-panel">
+      <div class="panel-heading"><div><p class="eyebrow">EXECUTION TRACE</p><h2>Transition history</h2></div><span id="traceCount" class="trace-count">0 transitions</span></div>
+      <ol id="traceList" class="trace-list"><li class="trace-empty">Your machine steps will appear here.</li></ol>
+    </section>
+
+    <section class="explanation-strip">
+      <div><span class="explanation-icon">01</span><p><strong>Read</strong><br>The head reads the symbol under it.</p></div>
+      <div><span class="explanation-icon">02</span><p><strong>Write</strong><br>The transition may replace that symbol.</p></div>
+      <div><span class="explanation-icon">03</span><p><strong>Move</strong><br>The head moves left, right, or stays.</p></div>
+      <div><span class="explanation-icon">04</span><p><strong>Repeat</strong><br>A clean pass accepts the sorted tape.</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>Turing Machine Simulator &amp; Visualizer · RIT</span><span>Finite Automata &amp; Formal Languages · Learning formal computation and sorting logic</span></footer>
+</body>
+</html>

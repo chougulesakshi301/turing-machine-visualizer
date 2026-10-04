@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" role="img" aria-labelledby="title desc">
+  <title id="title">Priority shipping parcel</title>
+  <desc id="desc">An illustrated corrugated cardboard parcel with an orange priority shipping label.</desc>
+  <defs>
+    <linearGradient id="front" x1="0" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#d4a36b"/>
+      <stop offset="1" stop-color="#a36c3d"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b47b48"/>
+      <stop offset="1" stop-color="#74482e"/>
+    </linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#ebc188"/>
+      <stop offset="1" stop-color="#c18b58"/>
+    </linearGradient>
+    <filter id="shadow" x="-.3" y="-.3" width="1.6" height="1.8">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7"/>
+      <feOffset dy="7"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".28"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <ellipse cx="143" cy="193" rx="91" ry="13" fill="#05090c" opacity=".38"/>
+  <g filter="url(#shadow)" stroke="#71472b" stroke-linejoin="round">
+    <path d="m54 69 76-39 101 37-80 42z" fill="url(#top)" stroke-width="2"/>
+    <path d="m54 69 97 39v86l-97-43z" fill="url(#front)" stroke-width="2"/>
+    <path d="m151 108 80-41v88l-80 39z" fill="url(#side)" stroke-width="2"/>
+    <path d="m118 45 23-12 41 15-26 14z" fill="#e5c194" stroke="#bd9569"/>
+    <path d="m139 37 7 3v18l-7-3z" fill="#d6b387" stroke="none"/>
+    <path d="m56 72 91 36v7L56 80z" fill="#704b30" opacity=".56" stroke="none"/>
+    <path d="m151 108 8 3v80l-8 3z" fill="#63432d" opacity=".36" stroke="none"/>
+    <path d="m68 89 68 27v12L68 101z" fill="#ddba88" opacity=".6" stroke="none"/>
+    <rect x="76" y="115" width="55" height="49" rx="3" transform="rotate(22 76 115)" fill="#fff1d7" stroke="#e7a14b" stroke-width="2"/>
+    <path d="m83 123 34 14" stroke="#e79234" stroke-width="5"/>
+    <path d="m83 122 7 3-4 4-5-4z" fill="#fff7ea" stroke="none"/>
+    <path d="m80 132 25 10" stroke="#b8a88f" stroke-width="1.4"/>
+    <path d="m78 138 18 7" stroke="#b8a88f" stroke-width="1.4"/>
+    <g transform="rotate(22 104 151)" stroke="none" fill="#26343a">
+      <path d="M82 147h2v13h-2zm4 0h1v13h-1zm3 0h3v13h-3zm5 0h1v13h-1zm3 0h2v13h-2zm4 0h1v13h-1zm3 0h3v13h-3zm5 0h1v13h-1zm3 0h2v13h-2z"/>
+    </g>
+    <path d="m166 119 48-24v5l-48 25z" fill="#d1a373" opacity=".45" stroke="none"/>
+    <path d="m170 135 43-21m-43 27 43-21m-43 27 30-15" stroke="#d4ae83" stroke-width="1.4" opacity=".5"/>
+  </g>
+  <g transform="rotate(22 199 130)">
+    <rect x="174" y="119" width="54" height="19" rx="4" fill="#bd582c" stroke="#f3b270" stroke-width="1.5"/>
+    <path d="m181 129 5-4 5 4-5 4z" fill="#fff0cf"/>
+    <path d="M181 129h10m-5-4v8" stroke="#bd582c" stroke-width="1.4"/>
+    <text x="207" y="132" fill="#fff0cf" font-family="Arial,sans-serif" font-size="7" font-weight="700" text-anchor="middle">PRIORITY</text>
+  </g>
+</svg>

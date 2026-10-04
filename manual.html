@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Instructions for using the Turing Machine Simulator and Visualizer.">
+  <title>Manual | Turing Machine Simulator &amp; Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">TM</span><span>TM Visualizer<small>RIT · COMPUTER SCIENCE &amp; ENGINEERING</small></span></a>
+    <nav aria-label="Main navigation"><a href="index.html">Simulator</a><a href="theory.html">Theory</a><a class="active" href="manual.html">Manual</a><a href="about.html">About</a></nav>
+  </header>
+  <main class="page-shell content-shell">
+    <section class="hero"><div><p class="eyebrow">QUICK START</p><h1>Simulator manual</h1><p class="hero-copy">Set an input, run the machine, and inspect every step of its computation.</p></div></section>
+    <div class="content-grid">
+      <section class="panel"><p class="eyebrow">GET STARTED</p><h2>Run a sorting example</h2><ol class="step-list">
+        <li><span><strong>Choose an input.</strong> Enter a sequence containing S and P, or select a built-in example. Spaces are ignored.</span></li>
+        <li><span><strong>Load it.</strong> Press Load to place the sequence between the tape boundary markers and reset the machine.</span></li>
+        <li><span><strong>Watch one transition.</strong> Press Step (or Space) to read, write, move, and change state once.</span></li>
+        <li><span><strong>Run automatically.</strong> Press Run; adjust the speed slider to change the delay. Pause stops the animation.</span></li>
+        <li><span><strong>Inspect the result.</strong> Accepted means a clean scan found the tape sorted. The trace lists each rule that ran.</span></li>
+      </ol></section>
+      <section class="panel"><p class="eyebrow">PARCEL CLASSIFICATION</p><h2>Try the simulated scanner</h2><ol class="step-list">
+        <li><span><strong>Enter a sample ID.</strong> Use PKG-1001 for Priority Express or PKG-1002 for Standard Delivery.</span></li>
+        <li><span><strong>Scan the ID.</strong> The offline demo looks up a local sample shipping record; it does not access a camera, barcode reader, network, or real shipping database.</span></li>
+        <li><span><strong>Add and load.</strong> Add successfully classified parcels to a batch, then load it into the Turing machine. Priority maps to P; Standard maps to S.</span></li>
+        <li><span><strong>Sort and route.</strong> Run the machine. Once it accepts, the result is grouped into priority and standard destination lanes.</span></li>
+      </ol><p>Try UNREADABLE or NO-RECORD to see the exception path. These cases are held for manual review; the demo never guesses a parcel class.</p></section>
+      <section class="panel"><p class="eyebrow">PRESENTATION WALKTHROUGH</p><h2>Five steps for a classroom demo</h2><ol class="step-list">
+        <li><span>Start the guided demo and explain that parcel detection is simulated.</span></li>
+        <li><span>Show PKG-1002 being matched to a Standard shipping record and added as S.</span></li>
+        <li><span>Show PKG-1001 being matched to a Priority record and added as P; the tape input becomes SP.</span></li>
+        <li><span>Run the Turing machine and point out the head, transition trace, and swap from SP to PS.</span></li>
+        <li><span>Finish with the separate priority and standard destination lanes. Explain that real hardware integration needs scanners, tracking, industrial controls, and safety engineering.</span></li>
+      </ol></section>
+      <section class="panel"><p class="eyebrow">SAMPLE TEST CASES</p><h2>Expected behavior</h2><ul class="simple-list">
+        <li><strong>PKG-1001:</strong> ID found → Priority Express → P.</li>
+        <li><strong>PKG-1002:</strong> ID found → Standard Delivery → S.</li>
+        <li><strong>UNREADABLE:</strong> ID cannot be read → manual review; do not classify.</li>
+        <li><strong>NO-RECORD:</strong> ID is readable but missing from sample records → manual review; do not classify.</li>
+        <li><strong>SP:</strong> sorter output PS → one priority parcel in the priority lane and one standard parcel in the standard lane.</li>
+        <li><strong>PPSS:</strong> already sorted → output remains PPSS with zero adjacent swaps.</li>
+      </ul></section>
+      <section class="panel"><p class="eyebrow">SYMBOL KEY</p><h2>What appears on the tape</h2><ul class="simple-list">
+        <li><strong>S</strong> — standard parcel</li><li><strong>P</strong> — priority parcel</li><li><strong>□</strong> — blank tape cell</li><li><strong>⊢</strong> — left boundary marker</li><li><strong>⊣</strong> — right boundary marker</li>
+      </ul><p>The head marker points at the cell that will be read on the next step. State and transition panels update after every machine operation.</p></section>
+      <section class="panel"><p class="eyebrow">CONVEYOR VIEW</p><h2>Follow the parcels</h2><p>The animated conveyor below the tape mirrors each parcel symbol using local parcel illustrations. Priority and standard parcels have different shipping labels. The scanner follows the current Turing machine head, and the parcel image changes during the two writes that make an adjacent swap. Use the conveyor alongside the tape to connect the real-world analogy to each formal machine step.</p><p>The scanner above is also simulated and uses sample IDs stored in the project. This simulator updates a symbolic tape; the sorting concept could be used in an industrial system with parcel identification, suitable conveyor controls, and safety engineering.</p></section>
+      <section class="panel"><p class="eyebrow">CONTROLS</p><h2>Buttons &amp; keyboard</h2><ul class="simple-list">
+        <li><strong>Step</strong> — execute one transition.</li><li><strong>Run</strong> — execute transitions automatically.</li><li><strong>Pause</strong> — stop automatic execution.</li><li><strong>Reset</strong> — restart the currently loaded input.</li><li><strong>Space</strong> — execute one step when focus is not in a form control.</li>
+      </ul></section>
+      <section class="panel"><p class="eyebrow">REVIEW &amp; PRESENT</p><h2>Explore a completed run</h2><ul class="simple-list">
+        <li><strong>Step timeline</strong> — scrub to any earlier configuration; Previous and Next move one transition at a time.</li><li><strong>Replay from here</strong> — animate the recorded run from the selected point.</li><li><strong>Trace history</strong> — select a trace entry to jump directly to that step.</li><li><strong>Export run trace</strong> — download the input, result, counters, and transition sequence as JSON.</li><li><strong>Presentation mode</strong> — simplify the page for a classroom demonstration; press Escape to exit.</li>
+      </ul></section>
+      <section class="panel"><p class="eyebrow">UNDERSTANDING THE RESULT</p><h2>Accepted or rejected?</h2><p>The machine accepts when a complete left-to-right pass finds no <span class="inline-code">S P</span> pair. That means every priority parcel is before every standard parcel.</p><p>Only S/P inputs are valid. A missing transition or safety step-limit halts as rejected; the status area explains why.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer"><span>Turing Machine Simulator &amp; Visualizer · RIT</span><span>Finite Automata &amp; Formal Languages · Learning formal computation and sorting logic</span></footer>
+</body>
+</html>

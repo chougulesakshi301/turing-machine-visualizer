@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn how the Factory Parcel Sorter represents a sorting algorithm as a Turing machine.">
+  <title>Theory | Turing Machine Simulator &amp; Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">TM</span><span>TM Visualizer<small>RIT · COMPUTER SCIENCE &amp; ENGINEERING</small></span></a>
+    <nav aria-label="Main navigation"><a href="index.html">Simulator</a><a class="active" href="theory.html">Theory</a><a href="manual.html">Manual</a><a href="about.html">About</a></nav>
+  </header>
+  <main class="page-shell content-shell">
+    <section class="hero"><div><p class="eyebrow">THE FORMAL MODEL</p><h1>How the machine sorts</h1><p class="hero-copy">A visible parcel sorter built from the basic operations of a deterministic Turing machine.</p></div></section>
+    <section class="content-hero">
+      <p class="eyebrow">COMPUTATION, MADE VISIBLE</p>
+      <h2>Every swap is a sequence of machine steps</h2>
+      <p>The simulator does not call a built-in sorting function. It reads one tape cell, applies one transition, writes at most one symbol, and moves its head. It repeats scans until it completes a pass without finding an out-of-order pair.</p>
+    </section>
+    <div class="content-grid">
+      <section class="panel"><p class="eyebrow">FORMAL DEFINITION</p><h2>Machine tuple</h2><div class="formula">M = (Q, Σ, Γ, δ, q₀, qaccept, qreject)</div><ul class="simple-list">
+        <li><strong>Q</strong> — finite set of control states</li><li><strong>Σ</strong> — input alphabet {S, P}</li><li><strong>Γ</strong> — tape alphabet {S, P, □, ⊢, ⊣}</li><li><strong>δ</strong> — transition function</li><li><strong>q₀</strong> — initial state; qaccept and qreject are halting states</li>
+      </ul></section>
+      <section class="panel"><p class="eyebrow">TRANSITION SHAPE</p><h2>One rule at a time</h2><div class="formula">δ(q, a) = (q′, b, D)</div><p>The machine in state <span class="inline-code">q</span> reads symbol <span class="inline-code">a</span>, writes <span class="inline-code">b</span>, moves in direction <span class="inline-code">D</span> (L, R, or S), and enters state <span class="inline-code">q′</span>.</p></section>
+      <section class="panel"><p class="eyebrow">ALGORITHM</p><h2>Adjacent-swap passes</h2><ol class="simple-list">
+        <li>Scan neighboring symbols from left to right.</li><li>When the machine sees <span class="inline-code">S P</span>, write <span class="inline-code">S</span> over the P, move left, then write <span class="inline-code">P</span> over the S. These are two separate transitions and are animated separately.</li><li>Remember in the finite control that this pass made a swap.</li><li>At the right marker, restart if a swap happened; accept if the pass was clean.</li>
+      </ol></section>
+      <section class="panel"><p class="eyebrow">WHY REPEAT?</p><h2>Sorting one pair at a time</h2><p>A single left-to-right pass might move a priority parcel left by only one cell. Repeating passes brings every P before every S. For example:</p><div class="formula">SPSP → PSSP → PSPS → PPSS</div><p>The displayed trace shows the actual transition sequence, including separate writes for each swap.</p></section>
+    </div>
+    <section class="panel"><p class="eyebrow">INDUSTRIAL CONNECTION</p><h2>From scan to sorting lane</h2><ol class="simple-list">
+      <li>Scan the parcel ID.</li><li>Check its shipping record: priority or standard.</li><li>Sort it into the matching lane.</li>
+    </ol><p>In this simulator, the parcel class is entered as <span class="inline-code">P</span> or <span class="inline-code">S</span>. Real equipment would perform the scan and move the parcel.</p></section>
+    <aside class="notice"><strong>Model note:</strong> ⊢ and ⊣ mark the input region so the machine knows where a pass starts and ends. The tape can display blank cells beyond these markers; for valid S/P inputs the machine stays within the marked region.</aside>
+  </main>
+  <footer class="site-footer"><span>Turing Machine Simulator &amp; Visualizer · RIT</span><span>Finite Automata &amp; Formal Languages · Learning formal computation and sorting logic</span></footer>
+</body>
+</html>
